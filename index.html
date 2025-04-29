@@ -1,0 +1,463 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kỷ niệm yêu nhau của Nguyễn Quang Huy và Nguyễn Anh Thư, giao diện InLove dễ thương.">
+  <meta property="og:title" content="Huy & Thư - Kỷ Niệm Yêu">
+  <meta property="og:description" content="Xem video, ảnh kỷ niệm và hành trình yêu của Huy & Thư!">
+  <meta property="og:image" content="https://i.imgur.com/ao0Jo6W.jpeg">
+  <title>Huy & Thư - Yêu Nhau Mãi Mãi</title>
+  <link rel="icon" type="image/jpeg" href="https://i.imgur.com/ao0Jo6W.jpeg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff99cc, #cc99ff, #99ccff);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .heart {
+      position: fixed;
+      font-size: 22px;
+      line-height: 22px;
+      text-align: center;
+      opacity: 0.8;
+      animation: floatHeart calc(4s + 2s * var(--random-duration)) linear forwards;
+      pointer-events: none;
+      z-index: 5;
+    }
+    @keyframes floatHeart {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(calc(30px * var(--random-x))) rotate(180deg);
+        opacity: 0;
+      }
+    }
+    .glassmorphic {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 20px rgba(255, 153, 204, 0.3);
+    }
+    .rainbow-text {
+      background: linear-gradient(90deg, #ff66b2, #cc66ff, #66ccff, #ff66b2);
+      background-size: 400% 100%;
+      animation: rainbow 4s infinite linear;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    @keyframes rainbow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
+    }
+    .circle-counter {
+      width: 220px;
+      height: 220px;
+      border: 5px solid transparent;
+      border-radius: 50%;
+      box-shadow: 0 0 25px rgba(255, 153, 204, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.3);
+      animation: pulse 2s infinite;
+      position: relative;
+      overflow: hidden;
+    }
+    .circle-counter::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+      animation: sparkle 3s infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .circle-counter::after {
+      content: '';
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      right: -15px;
+      bottom: -15px;
+      border: 6px solid transparent;
+      border-radius: 50%;
+      border-image: linear-gradient(to right, #ff99cc, #cc99ff, #99ccff, red, orange, yellow, green, blue, indigo, violet, #ff99cc) 1;
+      animation: rainbowBorder 3s linear infinite;
+      box-shadow: 0 0 15px rgba(255, 153, 204, 0.4);
+      z-index: -1;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+    @keyframes sparkle {
+      0% { opacity: 0.3; transform: rotate(0deg); }
+      50% { opacity: 0.6; transform: rotate(180deg); }
+      100% { opacity: 0.3; transform: rotate(360deg); }
+    }
+    @keyframes rainbowBorder {
+      0% { border-image: linear-gradient(0deg, #ff99cc, #cc99ff, #99ccff, red, orange, yellow, green, blue, indigo, violet, #ff99cc) 1; }
+      100% { border-image: linear-gradient(360deg, #ff99cc, #cc99ff, #99ccff, red, orange, yellow, green, blue, indigo, violet, #ff99cc) 1; }
+    }
+    .avatar-container {
+      position: relative;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+    .avatar-container:hover {
+      transform: scale(1.1);
+    }
+    .name {
+      background: linear-gradient(90deg, #ff66b2, #cc66ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      max-width: 90%;
+      max-height: 90%;
+      padding: 25px;
+      overflow-y: auto;
+      box-shadow: 0 0 30px rgba(255, 153, 204, 0.4);
+    }
+    .video-item, .photo-item {
+      transition: transform 0.3s ease;
+    }
+    .video-item:hover, .photo-item:hover {
+      transform: scale(1.05);
+    }
+    .container::after {
+      content: '💖';
+      position: absolute;
+      font-size: 100px;
+      opacity: 0.1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+    }
+    @media (max-width: 640px) {
+      .circle-counter {
+        width: 160px;
+        height: 160px;
+      }
+      .circle-counter::after {
+        top: -12px;
+        left: -12px;
+        right: -12px;
+        bottom: -12px;
+        border-width: 5px;
+      }
+      .avatar {
+        width: 70px;
+        height: 70px;
+      }
+      .name {
+        font-size: 0.9rem;
+      }
+      .modal-content {
+        max-width: 95%;
+        padding: 15px;
+      }
+      .container {
+        width: 90%;
+        padding: 1.5rem;
+      }
+      h1 { font-size: 2rem; }
+      .love-counter { font-size: 2.5rem; }
+      button { padding: 0.75rem 1rem; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container glassmorphic rounded-3xl mx-auto p-8 w-11/12 max-w-md text-center relative">
+    <h1 class="text-4xl font-bold rainbow-text mb-8 font-[Dancing+Script]">
+      Huy & Kim - Chịch Nhau 24/7 💓
+    </h1>
+    <div class="flex justify-between mb-8">
+      <div class="text-center flex-1">
+        <div class="avatar-container mx-auto">
+          <img src="https://i.imgur.com/yhXn1bT.jpeg" alt="Nguyễn Anh Thư" class="avatar">
+        </div>
+        <div class="name text-lg font-semibold mt-2">Ng Anh Thư 💞</div>
+      </div>
+      <div class="text-center flex-1">
+        <div class="avatar-container mx-auto">
+          <img src="https://i.imgur.com/04sfT6b.jpeg" alt="Ng Quang Huy ❄️" class="avatar">
+        </div>
+        <div class="name text-lg font-semibold mt-2">Ng Quang Huy ❄️</div>
+      </div>
+    </div>
+    <div class="tabs flex justify-center mb-6">
+      <button class="tab-btn glassmorphic rounded-l-xl px-4 py-2 text-white font-semibold active" data-tab="days">Ngày Yêu</button>
+      <button class="tab-btn glassmorphic rounded-r-xl px-4 py-2 text-white font-semibold" data-tab="details">Chi Tiết</button>
+    </div>
+    <div id="days-tab" class="tab-content">
+      <div class="circle-counter flex items-center justify-center rounded-full mx-auto mb-6">
+        <div class="text-center">
+          <div class="love-counter text-5xl font-bold">920</div>
+          <div class="text-xl font-[Dancing+Script]">Ngày Chịch Nhau</div>
+        </div>
+      </div>
+    </div>
+    <div id="details-tab" class="tab-content hidden">
+      <div class="text-2xl font-semibold mb-4" id="love-details"></div>
+    </div>
+    <div class="flex flex-col gap-4 mt-6">
+      <button id="video-btn" class="glassmorphic rounded-xl px-6 py-3 text-lg font-semibold text-white hover:bg-white/20 transition-transform hover:scale-105">
+        <i class="fas fa-video mr-2"></i> Xem Video Kỷ Niệm
+      </button>
+      <button id="photo-btn" class="glassmorphic rounded-xl px-6 py-3 text-lg font-semibold text-white hover:bg-white/20 transition-transform hover:scale-105">
+        <i class="fas fa-image mr-2"></i> Xem Ảnh Kỷ Niệm
+      </button>
+    </div>
+    <div class="mt-8 text-sm text-gray-200">
+      Created with 💞 by <span class="text-pink-300 font-bold">Huy & Thư</span>
+    </div>
+  </div>
+
+  <div id="video-modal" class="modal">
+    <div class="modal-content">
+      <h2 class="text-2xl font-bold text-pink-300 mb-4 font-[Dancing+Script]">Video Kỷ Niệm 🎥</h2>
+      <div id="video-list" class="grid grid-cols-1 gap-4">
+        <!-- Video items will be populated by JS -->
+      </div>
+      <button class="mt-4 bg-pink-500 text-white font-semibold py-2 px-4 rounded-xl hover:bg-pink-600" onclick="closeModal('video-modal')">
+        Đóng
+      </button>
+    </div>
+  </div>
+
+  <div id="photo-modal" class="modal">
+    <div class="modal-content">
+      <h2 class="text-2xl font-bold text-purple-300 mb-4 font-[Dancing+Script]">Ảnh Kỷ Niệm 📸</h2>
+      <div id="photo-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Photo items will be populated by JS -->
+      </div>
+      <button class="mt-4 bg-purple-500 text-white font-semibold py-2 px-4 rounded-xl hover:bg-purple-600" onclick="closeModal('photo-modal')">
+        Đóng
+      </button>
+    </div>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/audio/2023/03/29/14-44-22-360_2023-03-29-14-44-22-360.mp3" type="audio/mp3">
+  </audio>
+
+  <script>
+    // Preset titles for videos and photos
+    const mediaItems = {
+      videos: [
+        { src: './mp4/video1.mp4', title: 'Em Yêu 💖' },
+        { src: './mp4/video2.mp4', title: 'Ngày Đầu Chịch 😊' }
+      ],
+      photos: [
+        { src: './jpg/photo1.jpg', title: 'Kỷ Niệm Đầu Tiên 🌸' },
+        { src: './jpg/photo2.jpg', title: 'Chịch Nhau 247 💑' }
+      ]
+    };
+
+    // Calculate love duration
+    function calculateLoveDuration() {
+      const startDate = new Date('2022-10-23'); // Ngày bắt đầu yêu
+      const today = new Date(); // Ngày hiện tại
+      const diffMs = today - startDate;
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const years = Math.floor(days / 365);
+      const remainingDays = days % 365;
+      const months = Math.floor(remainingDays / 30);
+      const weeks = Math.floor((remainingDays % 30) / 7);
+      const finalDays = remainingDays % 30 % 7;
+      document.getElementById('love-details').innerHTML = `
+        Chúng mình đã yêu nhau:<br>
+        ${years} năm 💖<br>
+        ${months} tháng 🌸<br>
+        ${weeks} tuần 💌<br>
+        ${finalDays} ngày 💞
+      `;
+      document.getElementById('love-counter').textContent = days;
+    }
+
+    // Update love duration every 24 hours
+    function startLoveCounter() {
+      calculateLoveDuration();
+      setInterval(calculateLoveDuration, 24 * 60 * 60 * 1000); // Cập nhật mỗi 24h
+    }
+
+    // Create floating hearts (💗)
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '💗';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.setProperty('--random-x', Math.random() * 2 - 1);
+      heart.style.setProperty('--random-duration', Math.random());
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    function startHearts() {
+      setInterval(createHeart, 300);
+    }
+
+    // Populate video list
+    function populateVideos() {
+      const videoList = document.getElementById('video-list');
+      videoList.innerHTML = '';
+      mediaItems.videos.forEach(video => {
+        const videoItem = document.createElement('div');
+        videoItem.className = 'video-item glassmorphic rounded-xl p-4';
+        videoItem.innerHTML = `
+          <h3 class="text-lg font-semibold text-pink-200 mb-2 font-[Dancing+Script]">${video.title}</h3>
+          <video controls class="w-full rounded-lg" style="max-height: 300px;">
+            <source src="${video.src}" type="video/mp4">
+            Trình duyệt không hỗ trợ video.
+          </video>
+        `;
+        videoList.appendChild(videoItem);
+      });
+    }
+
+    // Populate photo list
+    function populatePhotos() {
+      const photoList = document.getElementById('photo-list');
+      photoList.innerHTML = '';
+      mediaItems.photos.forEach(photo => {
+        const photoItem = document.createElement('div');
+        photoItem.className = 'photo-item glassmorphic rounded-xl p-4';
+        photoItem.innerHTML = `
+          <h3 class="text-lg font-semibold text-purple-200 mb-2 font-[Dancing+Script]">${photo.title}</h3>
+          <img src="${photo.src}" alt="${photo.title}" class="w-full rounded-lg" style="max-height: 300px; object-fit: cover;">
+        `;
+        photoList.appendChild(photoItem);
+      });
+    }
+
+    // Open modal
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+    }
+
+    // Close modal
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+      const videos = document.querySelectorAll('video');
+      videos.forEach(video => video.pause());
+    }
+
+    // Tab switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+      document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+    }
+
+    // Event listeners
+    document.getElementById('video-btn').addEventListener('click', () => {
+      populateVideos();
+      openModal('video-modal');
+    });
+
+    document.getElementById('photo-btn').addEventListener('click', () => {
+      populatePhotos();
+      openModal('photo-modal');
+    });
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        switchTab(btn.dataset.tab);
+      });
+    });
+
+    // Start hearts, music, and love counter on load
+    document.addEventListener('DOMContentLoaded', () => {
+      startLoveCounter();
+      startHearts();
+      const music = document.getElementById('bg-music');
+      music.volume = 0.3;
+      music.play().catch(() => console.log('Autoplay blocked'));
+    });
+  </script>
+</body>
+</html>
