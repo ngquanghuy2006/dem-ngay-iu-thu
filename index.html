@@ -45,18 +45,25 @@
   <meta name="description" content="Kỷ niệm yêu nhau của Nguyễn Quang Huy và Nguyễn Anh Thư, giao diện InLove dễ thương.">
   <meta property="og:title" content="Huy & Thư - Kỷ Niệm Yêu">
   <meta property="og:description" content="Xem video, ảnh kỷ niệm và hành trình yêu của Huy & Thư!">
-  <meta property="og:image" content="https://i.imgur.com/ao0Jo6W.jpeg">
-  <title>Huy & Thư - Yêu Nhau Mãi Mãi</title>
-  <link rel="icon" type="image/jpeg" href="https://i.imgur.com/ao0Jo6W.jpeg">
+  <meta property="og:image" content="https://i.imgur.com/mKZgycV.jpeg">
+  <title>Huy & Thư - Yêu Mãi Mãi</title>
+  <link rel="icon" type="image/jpeg" href="https://i.imgur.com/mKZgycV.jpeg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@400;700&family=Indie+Flower&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ff99cc, #cc99ff, #99ccff);
+      background: linear-gradient(135deg, #ffb6c1, #d8b9ff, #b9e6ff);
       background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
+      animation: gradientShift 15s ease infinite;
       min-height: 100vh;
       color: #fff;
       overflow-x: hidden;
@@ -64,59 +71,77 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
+
     @keyframes gradientShift {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
+    /* Floating hearts */
     .heart {
       position: fixed;
-      font-size: 22px;
-      line-height: 22px;
+      font-size: 18px;
+      line-height: 18px;
       text-align: center;
-      opacity: 0.8;
-      animation: floatHeart calc(4s + 2s * var(--random-duration)) linear forwards;
+      opacity: 0.7;
+      animation: floatHeart calc(5s + 2s * var(--random-duration)) linear forwards;
       pointer-events: none;
       z-index: 5;
+      color: #ff99cc;
     }
+
     @keyframes floatHeart {
       0% {
-        transform: translateY(0) translateX(0) rotate(0deg);
-        opacity: 0.8;
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0.7;
       }
       100% {
-        transform: translateY(-100vh) translateX(calc(30px * var(--random-x))) rotate(180deg);
+        transform: translateY(-100vh) translateX(calc(50px * var(--random-x))) rotate(360deg);
         opacity: 0;
       }
     }
+
+    /* Glassmorphic effect */
     .glassmorphic {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(12px);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 20px rgba(255, 153, 204, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 4px 20px rgba(255, 153, 204, 0.4);
+      border-radius: 20px;
     }
+
+    /* Rainbow text */
     .rainbow-text {
-      background: linear-gradient(90deg, #ff66b2, #cc66ff, #66ccff, #ff66b2);
+      background: linear-gradient(90deg, #ff99cc, #d8b9ff, #b9e6ff, #ff99cc);
       background-size: 400% 100%;
-      animation: rainbow 4s infinite linear;
+      animation: rainbow 6s infinite linear;
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
     }
+
     @keyframes rainbow {
       0% { background-position: 0% 50%; }
       100% { background-position: 400% 50%; }
     }
+
+    /* Circle counter */
     .circle-counter {
-      width: 220px;
-      height: 220px;
-      border: 5px solid transparent;
+      width: 240px;
+      height: 240px;
       border-radius: 50%;
-      box-shadow: 0 0 25px rgba(255, 153, 204, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.3);
-      animation: pulse 2s infinite;
       position: relative;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+      box-shadow: 0 0 20px rgba(255, 153, 204, 0.5);
+      animation: pulse 2.5s infinite;
     }
+
     .circle-counter::before {
       content: '';
       position: absolute;
@@ -124,59 +149,258 @@
       left: -10px;
       right: -10px;
       bottom: -10px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-      animation: sparkle 3s infinite;
-      pointer-events: none;
-      z-index: 1;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #ff99cc, #d8b9ff, #b9e6ff, #ff99cc);
+      background-size: 400%;
+      animation: rainbowBorder 4s linear infinite;
+      z-index: -1;
+      filter: blur(5px);
     }
+
     .circle-counter::after {
       content: '';
       position: absolute;
-      top: -15px;
-      left: -15px;
-      right: -15px;
-      bottom: -15px;
-      border: 6px solid transparent;
-      border-radius: 50%;
-      border-image: linear-gradient(to right, #ff99cc, #cc99ff, #99ccff, red, orange, yellow, green, blue, indigo, violet, #ff99cc) 1;
-      animation: rainbowBorder 3s linear infinite;
-      box-shadow: 0 0 15px rgba(255, 153, 204, 0.4);
-      z-index: -1;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('https://i.imgur.com/heart-sparkle.png') center/contain no-repeat;
+      opacity: 0.2;
+      animation: sparkle 3s infinite;
     }
+
     @keyframes pulse {
       0% { transform: scale(1); }
-      50% { transform: scale(1.06); }
+      50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
+
     @keyframes sparkle {
-      0% { opacity: 0.3; transform: rotate(0deg); }
-      50% { opacity: 0.6; transform: rotate(180deg); }
-      100% { opacity: 0.3; transform: rotate(360deg); }
+      0% { opacity: 0.2; transform: rotate(0deg); }
+      50% { opacity: 0.4; transform: rotate(180deg); }
+      100% { opacity: 0.2; transform: rotate(360deg); }
     }
+
     @keyframes rainbowBorder {
-      0% { border-image: linear-gradient(0deg, #ff99cc, #cc99ff, #99ccff, red, orange, yellow, green, blue, indigo, violet, #ff99cc) 1; }
-      100% { border-image: linear-gradient(360deg, #ff99cc, #cc99ff, #99ccff, red, orange, yellow, green, blue, indigo, violet, #ff99cc) 1; }
+      0% { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
     }
+
+    /* Avatar */
     .avatar-container {
       position: relative;
       display: inline-block;
       transition: transform 0.3s ease;
     }
+
     .avatar {
       width: 100px;
       height: 100px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.5);
       border-radius: 50%;
+      object-fit: cover;
       transition: transform 0.3s ease;
+      box-shadow: 0 0 15px rgba(255, 153, 204, 0.3);
     }
+
     .avatar-container:hover {
-      transform: scale(1.1);
+      transform: scale(1.15);
     }
+
+    .avatar-container::after {
+      content: '💖';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      font-size: 20px;
+      opacity: 0.8;
+    }
+
+    /* Name */
     .name {
-      background: linear-gradient(90deg, #ff66b2, #cc66ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family: 'Indie Flower', cursive;
+      font-size: 1.2rem;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(255, 153, 204, 0.5);
     }
+
+    /* Buttons */
+    .btn {
+      background: linear-gradient(45deg, #ff99cc, #d8b9ff);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 15px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(255, 153, 204, 0.4);
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+      background: linear-gradient(45deg, #d8b9ff, #b9e6ff);
+      box-shadow: 0 6px 20px rgba(255, 153, 204, 0.6);
+    }
+
+    /* Video control buttons */
+    .video-control-btn {
+      background: linear-gradient(45deg, #ff99cc, #d8b9ff);
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(255, 153, 204, 0.4);
+    }
+
+    .video-control-btn:hover {
+      transform: scale(1.2);
+      background: linear-gradient(45deg, #d8b9ff, #b9e6ff);
+      box-shadow: 0 4px 15px rgba(255, 153, 204, 0.6);
+    }
+
+    .video-control-btn:active {
+      animation: pulse 0.3s;
+    }
+
+    /* Menu button */
+    .menu-btn {
+      background: linear-gradient(45deg, #ff99cc, #d8b9ff);
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(255, 153, 204, 0.4);
+      position: absolute;
+      top: 20px;
+      right: 60px;
+      z-index: 10;
+    }
+
+    .menu-btn:hover {
+      transform: scale(1.2);
+      background: linear-gradient(45deg, #d8b9ff, #b9e6ff);
+    }
+
+    /* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 30px rgba(255, 153, 204, 0.4);
+      z-index: 1001;
+      overflow-y: auto;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .popup.active {
+      display: block;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup h3 {
+      font-family: 'Dancing Script', cursive;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(255, 153, 204, 0.5);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .popup .popup-content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .popup .popup-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .popup .popup-item:hover {
+      background: linear-gradient(45deg, #ff99cc, #d8b9ff);
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(255, 153, 204, 0.4);
+    }
+
+    .popup .popup-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .popup .popup-item span {
+      color: #fff;
+      font-size: 1rem;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .popup .close-popup {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      color: #ff99cc;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .popup .close-popup:hover {
+      color: #d8b9ff;
+      transform: rotate(90deg);
+    }
+
+    /* Tabs */
+    .tab-btn {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(45deg, #ff99cc, #d8b9ff);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(255, 153, 204, 0.4);
+    }
+
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -184,163 +408,378 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.5);
       z-index: 1000;
       align-items: center;
       justify-content: center;
     }
+
     .modal-content {
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
       border: 2px solid rgba(255, 255, 255, 0.4);
-      border-radius: 20px;
+      border-radius: 25px;
       max-width: 90%;
-      max-height: 90%;
-      padding: 25px;
+      max-height: 90vh;
+      padding: 30px;
       overflow-y: auto;
       box-shadow: 0 0 30px rgba(255, 153, 204, 0.4);
+      position: relative;
     }
-    .video-item, .photo-item {
+
+    .modal-content h2 {
+      font-family: 'Dancing Script', cursive;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(255, 153, 204, 0.5);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      color: #ff99cc;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      color: #d8b9ff;
+      transform: scale(1.2);
+    }
+
+    /* Video item */
+    .video-item {
+      position: relative;
       transition: transform 0.3s ease;
+      border-radius: 15px;
+      overflow: hidden;
+      padding: 20px;
     }
-    .video-item:hover, .photo-item:hover {
+
+    .video-item video {
+      border: 2px solid transparent;
+      border-image: linear-gradient(45deg, #ff99cc, #d8b9ff, #b9e6ff, #ff99cc) 1;
+      border-image-slice: 1;
+      box-shadow: 0 0 15px rgba(255, 153, 204, 0.4);
+    }
+
+    .video-item:hover {
       transform: scale(1.05);
     }
-    .container::after {
+
+    .video-item::before {
       content: '💖';
       position: absolute;
-      font-size: 100px;
+      font-size: 20px;
+      opacity: 0.6;
+      animation: floatAround 3s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    .video-item:nth-child(odd)::before {
+      top: 10px;
+      left: 10px;
+      animation-delay: 0.5s;
+    }
+
+    .video-item:nth-child(even)::before {
+      bottom: 10px;
+      right: 10px;
+      animation-delay: 1s;
+    }
+
+    @keyframes floatAround {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(10px, -10px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* Photo item */
+    .photo-item {
+      position: relative;
+      transition: transform 0.3s ease;
+      padding: 20px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .photo-item img {
+      border: 2px solid transparent;
+      border-image: linear-gradient(45deg, #ff99cc, #d8b9ff, #b9e6ff, #ff99cc) 1;
+      border-image-slice: 1;
+      border-radius: 15px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .photo-item:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(255, 153, 204, 0.4);
+    }
+
+    .photo-item::after {
+      content: '🌸';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      opacity: 0.7;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Container */
+    .container {
+      position: relative;
+      z-index: 10;
+    }
+
+    .container::after {
+      content: '💞';
+      position: absolute;
+      font-size: 120px;
       opacity: 0.1;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: -1;
     }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Indie Flower', cursive;
+      font-size: 0.9rem;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(255, 153, 204, 0.5);
+      z-index: 10;
+    }
+
+    /* Responsive */
     @media (max-width: 640px) {
+      .container {
+        width: 95%;
+        padding: 1.5rem;
+      }
+
       .circle-counter {
-        width: 160px;
-        height: 160px;
+        width: 180px;
+        height: 180px;
       }
-      .circle-counter::after {
-        top: -12px;
-        left: -12px;
-        right: -12px;
-        bottom: -12px;
-        border-width: 5px;
+
+      .circle-counter::before {
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
       }
+
       .avatar {
         width: 70px;
         height: 70px;
       }
+
       .name {
+        font-size: 1rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .love-counter {
+        font-size: 2.5rem;
+      }
+
+      .btn {
+        padding: 10px 20px;
         font-size: 0.9rem;
       }
+
+      .tab-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+
       .modal-content {
         max-width: 95%;
-        padding: 15px;
+        padding: 20px;
       }
-      .container {
-        width: 90%;
-        padding: 1.5rem;
+
+      .video-control-btn, .menu-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
       }
-      h1 { font-size: 2rem; }
-      .love-counter { font-size: 2.5rem; }
-      button { padding: 0.75rem 1rem; font-size: 1rem; }
+
+      .popup .popup-content {
+        grid-template-columns: repeat(1, 1fr);
+      }
+
+      .popup .popup-item img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .popup .popup-item span {
+        font-size: 0.9rem;
+      }
+
+      footer {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .popup .popup-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container glassmorphic rounded-3xl mx-auto p-8 w-11/12 max-w-md text-center relative">
-    <h1 class="text-4xl font-bold rainbow-text mb-8 font-[Dancing+Script]">
-      Huy & Kim - Chịch Nhau 24/7 💓
-    </h1>
-    <div class="flex justify-between mb-8">
+  <!-- Container -->
+  <div class="container glassmorphic rounded-3xl mx-auto p-8 w-11/12 max-w-lg text-center relative">
+    <div class="logo mb-6">
+      <img src="https://i.imgur.com/TGT9b3a.jpeg" alt="Huy & Thư" class="w-24 h-24 rounded-full mx-auto border-2 border-white/50 shadow-lg">
+    </div>
+    <h1 class="text-4xl font-bold rainbow-text mb-8 font-[Dancing+Script]">Huy & Thư - Yêu Mãi Mãi 💓</h1>
+    <div class="flex justify-between mb-8 gap-4">
       <div class="text-center flex-1">
         <div class="avatar-container mx-auto">
           <img src="https://i.imgur.com/yhXn1bT.jpeg" alt="Nguyễn Anh Thư" class="avatar">
         </div>
-        <div class="name text-lg font-semibold mt-2">Ng Anh Thư 💞</div>
+        <div class="name mt-2">Ng Anh Thư 🌸</div>
       </div>
       <div class="text-center flex-1">
         <div class="avatar-container mx-auto">
-          <img src="https://i.imgur.com/04sfT6b.jpeg" alt="Ng Quang Huy ❄️" class="avatar">
+          <img src="https://i.imgur.com/04sfT6b.jpeg" alt="Nguyễn Quang Huy" class="avatar">
         </div>
-        <div class="name text-lg font-semibold mt-2">Ng Quang Huy ❄️</div>
+        <div class="name mt-2">Ng Quang Huy ❄️</div>
       </div>
     </div>
-    <div class="tabs flex justify-center mb-6">
-      <button class="tab-btn glassmorphic rounded-l-xl px-4 py-2 text-white font-semibold active" data-tab="days">Ngày Yêu</button>
-      <button class="tab-btn glassmorphic rounded-r-xl px-4 py-2 text-white font-semibold" data-tab="details">Chi Tiết</button>
+    <div class="tabs flex justify-center mb-6 gap-2">
+      <button class="tab-btn glassmorphic rounded-xl px-4 py-2 text-white font-semibold active" data-tab="days">Ngày Yêu</button>
+      <button class="tab-btn glassmorphic rounded-xl px-4 py-2 text-white font-semibold" data-tab="details">Chi Tiết</button>
     </div>
     <div id="days-tab" class="tab-content">
-      <div class="circle-counter flex items-center justify-center rounded-full mx-auto mb-6">
+      <div class="circle-counter mx-auto mb-6">
         <div class="text-center">
-          <div class="love-counter text-5xl font-bold">920</div>
-          <div class="text-xl font-[Dancing+Script]">Ngày Chịch Nhau</div>
+          <div class="love-counter text-5xl font-bold text-pink-300" id="love-counter">920</div>
+          <div class="text-xl font-[Dancing+Script] text-white">Ngày Yêu Nhau</div>
         </div>
       </div>
     </div>
     <div id="details-tab" class="tab-content hidden">
-      <div class="text-2xl font-semibold mb-4" id="love-details"></div>
+      <div class="text-2xl font-semibold text-white mb-4" id="love-details"></div>
     </div>
     <div class="flex flex-col gap-4 mt-6">
-      <button id="video-btn" class="glassmorphic rounded-xl px-6 py-3 text-lg font-semibold text-white hover:bg-white/20 transition-transform hover:scale-105">
-        <i class="fas fa-video mr-2"></i> Xem Video Kỷ Niệm
-      </button>
-      <button id="photo-btn" class="glassmorphic rounded-xl px-6 py-3 text-lg font-semibold text-white hover:bg-white/20 transition-transform hover:scale-105">
-        <i class="fas fa-image mr-2"></i> Xem Ảnh Kỷ Niệm
-      </button>
-    </div>
-    <div class="mt-8 text-sm text-gray-200">
-      Created with 💞 by <span class="text-pink-300 font-bold">Huy & Thư</span>
+      <button id="video-btn" class="btn"><i class="fas fa-video"></i> Xem Video Kỷ Niệm</button>
+      <button id="photo-btn" class="btn"><i class="fas fa-image"></i> Xem Ảnh Kỷ Niệm</button>
     </div>
   </div>
 
+  <!-- Video Modal -->
   <div id="video-modal" class="modal">
     <div class="modal-content">
-      <h2 class="text-2xl font-bold text-pink-300 mb-4 font-[Dancing+Script]">Video Kỷ Niệm 🎥</h2>
-      <div id="video-list" class="grid grid-cols-1 gap-4">
-        <!-- Video items will be populated by JS -->
-      </div>
-      <button class="mt-4 bg-pink-500 text-white font-semibold py-2 px-4 rounded-xl hover:bg-pink-600" onclick="closeModal('video-modal')">
-        Đóng
-      </button>
+      <span class="close-btn" onclick="closeModal('video-modal')"><i class="fas fa-times"></i></span>
+      <h2 class="text-3xl font-bold mb-6"><i class="fas fa-video mr-2"></i>Video Kỷ Niệm 🎥</h2>
+      <div id="video-list" class="grid grid-cols-1 gap-6"></div>
+    </div>
+    <div id="video-popup" class="popup">
+      <span class="close-popup" onclick="toggleVideoPopup()"><i class="fas fa-times"></i></span>
+      <h3 class="text-2xl font-bold">Danh sách Video 🎥</h3>
+      <div id="video-popup-content" class="popup-content"></div>
     </div>
   </div>
 
+  <!-- Photo Modal -->
   <div id="photo-modal" class="modal">
     <div class="modal-content">
-      <h2 class="text-2xl font-bold text-purple-300 mb-4 font-[Dancing+Script]">Ảnh Kỷ Niệm 📸</h2>
-      <div id="photo-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Photo items will be populated by JS -->
-      </div>
-      <button class="mt-4 bg-purple-500 text-white font-semibold py-2 px-4 rounded-xl hover:bg-purple-600" onclick="closeModal('photo-modal')">
-        Đóng
-      </button>
+      <span class="close-btn" onclick="closeModal('photo-modal')"><i class="fas fa-times"></i></span>
+      <h2 class="text-3xl font-bold mb-6"><i class="fas fa-image mr-2"></i>Ảnh Kỷ Niệm 📸</h2>
+      <div id="photo-list" class="grid grid-cols-1 gap-6"></div>
+    </div>
+    <div id="photo-popup" class="popup">
+      <span class="close-popup" onclick="togglePhotoPopup()"><i class="fas fa-times"></i></span>
+      <h3 class="text-2xl font-bold font-[Indie+Flower]">Danh sách Ảnh 📸</h3>
+      <div id="photo-popup-content" class="popup-content"></div>
     </div>
   </div>
 
+  <!-- Footer -->
+  <footer>Created with 💞 by Huy & Thư</footer>
+
+  <!-- Audio -->
   <audio id="bg-music" loop>
     <source src="https://cdn.pixabay.com/audio/2023/03/29/14-44-22-360_2023-03-29-14-44-22-360.mp3" type="audio/mp3">
   </audio>
+  <audio id="click-sound" src="https://cdn.pixabay.com/audio/2022/03/10/audio_5b8b76349a.mp3"></audio>
 
+  <!-- JavaScript -->
   <script>
-    // Preset titles for videos and photos
+    // XLSX Processing (unchanged)
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+      if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+          var firstSheetName = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[firstSheetName];
+          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+          var filteredData = jsonData.filter(row => row.some(filledCell));
+          var headerRowIndex = filteredData.findIndex((row, index) =>
+            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+          );
+          if (headerRowIndex === -1 || headerRowIndex > 25) {
+            headerRowIndex = 0;
+          }
+          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+          return csv;
+        } catch (e) {
+          console.error(e);
+          return "";
+        }
+      }
+      return gk_fileData[filename] || "";
+    }
+
+    // Media items
     const mediaItems = {
       videos: [
-        { src: './mp4/1.mp4', title: 'Em Yêu 💖' },
-        { src: './mp4/2.mp4', title: 'Ngày Đầu Chịch 😊' }
+        { src: './mp4/1.mp4', title: 'Em Yêu 💖', thumbnail: './jpg/video1_thumb.jpg' },
+        { src: './mp4/2.mp4', title: 'Ngày Đầu Nắc 😊', thumbnail: './jpg/video2_thumb.jpg' }
       ],
       photos: [
-        { src: './jpg/1.jpg', title: 'Kỷ Niệm Đầu Tiên 🌸' },
-        { src: './jpg/2.jpg', title: 'Chịch Nhau 247 💑' }
+        { src: './jpg/1.jpg', title: 'Kỷ Niệm Đầu Tiên 🌸', thumbnail: './jpg/photo1.jpg' },
+        { src: './jpg/2.jpg', title: 'Chịch Nhau Mãi Mãi 💑', thumbnail: './jpg/photo2.jpg' }
       ]
     };
 
+    // Video control state
+    let currentVideoIndex = 0;
+    let currentPhotoIndex = 0;
+    let currentVideo = null;
+
     // Calculate love duration
     function calculateLoveDuration() {
-      const startDate = new Date('2022-10-23'); // Ngày bắt đầu yêu
-      const today = new Date(); // Ngày hiện tại
+      const startDate = new Date('2022-10-23');
+      const today = new Date();
       const diffMs = today - startDate;
       const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
       const years = Math.floor(days / 365);
@@ -358,71 +797,198 @@
       document.getElementById('love-counter').textContent = days;
     }
 
-    // Update love duration every 24 hours
+    // Update love duration
     function startLoveCounter() {
       calculateLoveDuration();
-      setInterval(calculateLoveDuration, 24 * 60 * 60 * 1000); // Cập nhật mỗi 24h
+      setInterval(calculateLoveDuration, 24 * 60 * 60 * 1000);
     }
 
-    // Create floating hearts (💗)
+    // Create floating hearts
     function createHeart() {
       const heart = document.createElement('div');
       heart.className = 'heart';
-      heart.textContent = '💗';
+      heart.textContent = ['💖', '💗', '💘'][Math.floor(Math.random() * 3)];
       heart.style.left = Math.random() * window.innerWidth + 'px';
       heart.style.setProperty('--random-x', Math.random() * 2 - 1);
       heart.style.setProperty('--random-duration', Math.random());
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 6000);
+      setTimeout(() => heart.remove(), 7000);
     }
 
     function startHearts() {
-      setInterval(createHeart, 300);
+      setInterval(createHeart, 400);
     }
 
     // Populate video list
     function populateVideos() {
       const videoList = document.getElementById('video-list');
       videoList.innerHTML = '';
-      mediaItems.videos.forEach(video => {
-        const videoItem = document.createElement('div');
-        videoItem.className = 'video-item glassmorphic rounded-xl p-4';
-        videoItem.innerHTML = `
-          <h3 class="text-lg font-semibold text-pink-200 mb-2 font-[Dancing+Script]">${video.title}</h3>
-          <video controls class="w-full rounded-lg" style="max-height: 300px;">
-            <source src="${video.src}" type="video/mp4">
-            Trình duyệt không hỗ trợ video.
-          </video>
+      const videoItem = document.createElement('div');
+      videoItem.className = 'video-item glassmorphic';
+      videoItem.innerHTML = `
+        <button class="menu-btn" onclick="toggleVideoPopup()"><i class="fas fa-bars"></i></button>
+        <h3 class="text-lg font-semibold text-white mb-4 font-[Dancing+Script]">
+          <i class="fas fa-video mr-2"></i>${mediaItems.videos[currentVideoIndex].title}
+        </h3>
+        <video id="current-video" class="w-full rounded-lg" style="max-height: 300px;" controls>
+          <source src="${mediaItems.videos[currentVideoIndex].src}" type="video/mp4">
+          Trình duyệt không hỗ trợ video.
+        </video>
+        <div class="video-controls flex justify-center gap-4 mt-4">
+          <button class="video-control-btn" onclick="previousVideo()"><i class="fas fa-arrow-left"></i></button>
+          <button class="video-control-btn" onclick="togglePlayPause()"><i class="fas fa-play" id="play-pause-icon"></i></button>
+          <button class="video-control-btn" onclick="nextVideo()"><i class="fas fa-arrow-right"></i></button>
+          <button class="video-control-btn" onclick="volumeDown()"><i class="fas fa-volume-down"></i></button>
+          <button class="video-control-btn" onclick="volumeUp()"><i class="fas fa-volume-up"></i></button>
+        </div>
+      `;
+      videoList.appendChild(videoItem);
+      currentVideo = document.getElementById('current-video');
+      currentVideo.volume = 0.5;
+      updatePlayPauseIcon();
+    }
+
+    // Populate video popup
+    function populateVideoPopup() {
+      const videoPopupContent = document.getElementById('video-popup-content');
+      videoPopupContent.innerHTML = '';
+      mediaItems.videos.forEach((video, index) => {
+        const item = document.createElement('div');
+        item.className = 'popup-item';
+        item.innerHTML = `
+          <img src="${video.thumbnail}" alt="${video.title}">
+          <span class="font-[Dancing+Script]">${video.title}</span>
         `;
-        videoList.appendChild(videoItem);
+        item.onclick = () => {
+          currentVideoIndex = index;
+          populateVideos();
+          toggleVideoPopup();
+          playClickSound();
+        };
+        videoPopupContent.appendChild(item);
       });
+    }
+
+    // Toggle video popup
+    function toggleVideoPopup() {
+      const popup = document.getElementById('video-popup');
+      if (!popup.classList.contains('active')) {
+        populateVideoPopup();
+      }
+      popup.classList.toggle('active');
+      playClickSound();
+    }
+
+    // Video controls
+    function nextVideo() {
+      currentVideoIndex = (currentVideoIndex + 1) % mediaItems.videos.length;
+      populateVideos();
+      playClickSound();
+    }
+
+    function previousVideo() {
+      currentVideoIndex = (currentVideoIndex - 1 + mediaItems.videos.length) % mediaItems.videos.length;
+      populateVideos();
+      playClickSound();
+    }
+
+    function togglePlayPause() {
+      if (currentVideo.paused) {
+        currentVideo.play();
+      } else {
+        currentVideo.pause();
+      }
+      updatePlayPauseIcon();
+      playClickSound();
+    }
+
+    function updatePlayPauseIcon() {
+      const icon = document.getElementById('play-pause-icon');
+      icon.className = currentVideo.paused ? 'fas fa-play' : 'fas fa-pause';
+    }
+
+    function volumeUp() {
+      if (currentVideo.volume < 1) {
+        currentVideo.volume = Math.min(1, currentVideo.volume + 0.1);
+      }
+      playClickSound();
+    }
+
+    function volumeDown() {
+      if (currentVideo.volume > 0) {
+        currentVideo.volume = Math.max(0, currentVideo.volume - 0.1);
+      }
+      playClickSound();
     }
 
     // Populate photo list
     function populatePhotos() {
       const photoList = document.getElementById('photo-list');
       photoList.innerHTML = '';
-      mediaItems.photos.forEach(photo => {
-        const photoItem = document.createElement('div');
-        photoItem.className = 'photo-item glassmorphic rounded-xl p-4';
-        photoItem.innerHTML = `
-          <h3 class="text-lg font-semibold text-purple-200 mb-2 font-[Dancing+Script]">${photo.title}</h3>
-          <img src="${photo.src}" alt="${photo.title}" class="w-full rounded-lg" style="max-height: 300px; object-fit: cover;">
+      const photoItem = document.createElement('div');
+      photoItem.className = 'photo-item';
+      photoItem.style.animationDelay = '0s';
+      photoItem.innerHTML = `
+        <button class="menu-btn" onclick="togglePhotoPopup()"><i class="fas fa-bars"></i></button>
+        <img src="${mediaItems.photos[currentPhotoIndex].src}" alt="${mediaItems.photos[currentPhotoIndex].title}" style="max-height: 300px;">
+        <h3 class="text-lg font-semibold text-white mt-2 font-[Indie+Flower]">${mediaItems.photos[currentPhotoIndex].title}</h3>
+      `;
+      photoList.appendChild(photoItem);
+    }
+
+    // Populate photo popup
+    function populatePhotoPopup() {
+      const photoPopupContent = document.getElementById('photo-popup-content');
+      photoPopupContent.innerHTML = '';
+      mediaItems.photos.forEach((photo, index) => {
+        const item = document.createElement('div');
+        item.className = 'popup-item';
+        item.innerHTML = `
+          <img src="${photo.thumbnail}" alt="${photo.title}">
+          <span class="font-[Indie+Flower]">${photo.title}</span>
         `;
-        photoList.appendChild(photoItem);
+        item.onclick = () => {
+          currentPhotoIndex = index;
+          populatePhotos();
+          togglePhotoPopup();
+          playClickSound();
+        };
+        photoPopupContent.appendChild(item);
       });
+    }
+
+    // Toggle photo popup
+    function togglePhotoPopup() {
+      const popup = document.getElementById('photo-popup');
+      if (!popup.classList.contains('active')) {
+        populatePhotoPopup();
+      }
+      popup.classList.toggle('active');
+      playClickSound();
     }
 
     // Open modal
     function openModal(modalId) {
       document.getElementById(modalId).style.display = 'flex';
+      playClickSound();
     }
 
     // Close modal
     function closeModal(modalId) {
       document.getElementById(modalId).style.display = 'none';
-      const videos = document.querySelectorAll('video');
-      videos.forEach(video => video.pause());
+      if (currentVideo) {
+        currentVideo.pause();
+      }
+      document.getElementById('video-popup').classList.remove('active');
+      document.getElementById('photo-popup').classList.remove('active');
+      playClickSound();
+    }
+
+    // Play click sound
+    function playClickSound() {
+      const clickSound = document.getElementById('click-sound');
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => console.log('Click sound blocked'));
     }
 
     // Tab switching
@@ -431,15 +997,18 @@
       document.getElementById(`${tabId}-tab`).classList.remove('hidden');
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+      playClickSound();
     }
 
     // Event listeners
     document.getElementById('video-btn').addEventListener('click', () => {
+      currentVideoIndex = 0;
       populateVideos();
       openModal('video-modal');
     });
 
     document.getElementById('photo-btn').addEventListener('click', () => {
+      currentPhotoIndex = 0;
       populatePhotos();
       openModal('photo-modal');
     });
@@ -450,7 +1019,7 @@
       });
     });
 
-    // Start hearts, music, and love counter on load
+    // Start on load
     document.addEventListener('DOMContentLoaded', () => {
       startLoveCounter();
       startHearts();
