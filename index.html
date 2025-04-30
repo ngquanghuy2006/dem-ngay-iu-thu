@@ -186,6 +186,62 @@
       100% { background-position: 400% 50%; }
     }
 
+    /* Love counter animation */
+    .love-counter {
+      transition: text-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .love-counter.animating {
+      text-shadow: 0 0 10px rgba(255, 153, 204, 0.8);
+      transform: scale(1.1);
+    }
+
+    /* Detail boxes */
+    .detail-box {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(45deg, #ff99cc, #ffb6c1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(255, 153, 204, 0.4);
+      backdrop-filter: blur(4px);
+      animation: pulse 2s infinite;
+    }
+
+    .detail-box span {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #00b7eb, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transition: transform 0.3s ease;
+    }
+
+    .detail-box.animating span {
+      transform: scale(1.2);
+    }
+
+    .details-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .separator {
+      font-size: 2rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #ff99cc, #d8b9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: pulse 2s infinite;
+    }
+
     /* Avatar */
     .avatar-container {
       position: relative;
@@ -298,84 +354,160 @@
       background: linear-gradient(45deg, #d8b9ff, #b9e6ff);
     }
 
-    /* Popup */
+    /* Popup (Album Scrapbook) */
     .popup {
       display: none;
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
-      max-width: 600px;
-      width: 90%;
+      transform: translate(-50%, -50%) perspective(1000px) rotateY(-30deg);
+      max-width: 700px;
+      width: 95%;
       max-height: 80vh;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(12px);
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      border-radius: 20px;
-      padding: 20px;
+      background: url('https://i.imgur.com/wood-texture.jpg') center/cover, rgba(255, 255, 255, 0.8);
+      background-blend-mode: overlay;
+      border: 4px solid transparent;
+      border-image: url('https://i.imgur.com/torn-paper.png') 30 stretch;
+      border-image-slice: 30;
+      border-radius: 25px;
+      padding: 30px;
       box-shadow: 0 0 30px rgba(255, 153, 204, 0.4);
       z-index: 1001;
       overflow-y: auto;
       opacity: 0;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .popup.active {
       display: block;
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+      transform: translate(-50%, -50%) perspective(1000px) rotateY(0deg);
+    }
+
+    .popup::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.5), transparent);
+      opacity: 0;
+      animation: sparklePopup 0.3s ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes sparklePopup {
+      0% { opacity: 0.5; transform: scale(0.8); }
+      100% { opacity: 0; transform: scale(1); }
     }
 
     .popup h3 {
       font-family: 'Dancing Script', cursive;
       color: #fff;
       text-shadow: 0 0 5px rgba(255, 153, 204, 0.5);
+      font-size: 2.5rem;
       margin-bottom: 20px;
       text-align: center;
+      position: relative;
+    }
+
+    .popup h3::before {
+      content: '💖';
+      position: absolute;
+      left: -30px;
+      top: 0;
+      font-size: 24px;
+      animation: bounce 1.5s infinite;
+    }
+
+    .popup h3::after {
+      content: '🌸';
+      position: absolute;
+      right: -30px;
+      top: 0;
+      font-size: 24px;
+      animation: bounce 1.5s infinite 0.5s;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
     }
 
     .popup .popup-content {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .popup .popup-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      gap: 20px;
       padding: 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
     }
 
-    .popup .popup-item:hover {
-      background: linear-gradient(45deg, #ff99cc, #d8b9ff);
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(255, 153, 204, 0.4);
-    }
-
-    .popup .popup-item img {
-      width: 80px;
-      height: 80px;
+    .popup .album-item {
+      position: relative;
+      width: 120px;
+      height: 90px;
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transform: rotate(calc(var(--rotate, 0) * 1deg));
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeSlide 0.4s ease calc(var(--delay, 0) * 0.1s) both;
+    }
+
+    .popup .album-item:hover {
+      transform: scale(1.1) rotate(0deg);
+      box-shadow: 0 6px 15px rgba(255, 153, 204, 0.6);
+      border: 2px solid transparent;
+      border-image: linear-gradient(45deg, #ff99cc, #d8b9ff) 1;
+    }
+
+    .popup .album-item img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
-    .popup .popup-item span {
+    .popup .album-item span {
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      right: 0;
       color: #fff;
       font-size: 1rem;
-      margin-top: 8px;
       text-align: center;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .popup .album-item::after {
+      content: var(--sticker, '💖');
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      font-size: 20px;
+      transform: rotate(10deg);
+      transition: transform 0.2s ease;
+    }
+
+    .popup .album-item:hover::after {
+      transform: translateY(-5px) rotate(10deg);
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(20px) rotate(calc(var(--rotate, 0) * 1deg)); }
+      100% { opacity: 1; transform: translateY(0) rotate(calc(var(--rotate, 0) * 1deg)); }
     }
 
     .popup .close-popup {
       position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 24px;
+      top: 20px;
+      right: 20px;
+      font-size: 30px;
       color: #ff99cc;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -384,6 +516,21 @@
     .popup .close-popup:hover {
       color: #d8b9ff;
       transform: rotate(90deg);
+    }
+
+    /* Scatter hearts on close */
+    .scatter-heart {
+      position: absolute;
+      font-size: 18px;
+      animation: scatterHeart 0.8s ease forwards;
+      pointer-events: none;
+      z-index: 1002;
+      color: #ff99cc;
+    }
+
+    @keyframes scatterHeart {
+      0% { opacity: 1; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0; transform: translate(calc(var(--x) * 50px), calc(var(--y) * 50px)) scale(0.5); }
     }
 
     /* Tabs */
@@ -625,17 +772,45 @@
         grid-template-columns: repeat(1, 1fr);
       }
 
-      .popup .popup-item img {
-        width: 60px;
-        height: 60px;
+      .popup .album-item {
+        width: 100px;
+        height: 75px;
       }
 
-      .popup .popup-item span {
+      .popup .album-item span {
         font-size: 0.9rem;
+        bottom: -18px;
+      }
+
+      .popup .album-item::after {
+        font-size: 16px;
+        top: -8px;
+        right: -8px;
+      }
+
+      .popup h3 {
+        font-size: 2rem;
       }
 
       footer {
         font-size: 0.8rem;
+      }
+
+      .detail-box {
+        width: 60px;
+        height: 60px;
+      }
+
+      .detail-box span {
+        font-size: 2rem;
+      }
+
+      .separator {
+        font-size: 1.5rem;
+      }
+
+      .details-container {
+        gap: 8px;
       }
     }
 
@@ -649,9 +824,6 @@
 <body>
   <!-- Container -->
   <div class="container glassmorphic rounded-3xl mx-auto p-8 w-11/12 max-w-lg text-center relative">
-    <div class="logo mb-6">
-      <img src="https://i.imgur.com/TGT9b3a.jpeg" alt="Huy & Thư" class="w-24 h-24 rounded-full mx-auto border-2 border-white/50 shadow-lg">
-    </div>
     <h1 class="text-4xl font-bold rainbow-text mb-8 font-[Dancing+Script]">Huy & Thư - Yêu Mãi Mãi 💓</h1>
     <div class="flex justify-between mb-8 gap-4">
       <div class="text-center flex-1">
@@ -674,13 +846,21 @@
     <div id="days-tab" class="tab-content">
       <div class="circle-counter mx-auto mb-6">
         <div class="text-center">
-          <div class="love-counter text-5xl font-bold text-pink-300" id="love-counter">920</div>
+          <div class="love-counter text-5xl font-bold text-pink-300" id="love-counter">1</div>
           <div class="text-xl font-[Dancing+Script] text-white">Ngày Yêu Nhau</div>
         </div>
       </div>
     </div>
     <div id="details-tab" class="tab-content hidden">
-      <div class="text-2xl font-semibold text-white mb-4" id="love-details"></div>
+      <div class="details-container" id="love-details">
+        <div class="detail-box"><span id="years">0</span></div>
+        <span class="separator">:</span>
+        <div class="detail-box"><span id="months">0</span></div>
+        <span class="separator">:</span>
+        <div class="detail-box"><span id="weeks">0</span></div>
+        <span class="separator">:</span>
+        <div class="detail-box"><span id="days">0</span></div>
+      </div>
     </div>
     <div class="flex flex-col gap-4 mt-6">
       <button id="video-btn" class="btn"><i class="fas fa-video"></i> Xem Video Kỷ Niệm</button>
@@ -762,12 +942,12 @@
     // Media items
     const mediaItems = {
       videos: [
-        { src: './mp4/1.mp4', title: 'Em Yêu 💖', thumbnail: './jpg/video1_thumb.jpg' },
-        { src: './mp4/2.mp4', title: 'Ngày Đầu Nắc 😊', thumbnail: './jpg/video2_thumb.jpg' }
+        { src: './mp4/1.mp4', title: 'Bbi Kim Ju 💖', thumbnail: './jpg/xxx.jpg' },
+        { src: './mp4/2.mp4', title: 'Ngày Đầu Nắc 😊', thumbnail: './jpg/xxx.jpg' }
       ],
       photos: [
-        { src: './jpg/1.jpg', title: 'Kỷ Niệm Đầu Tiên 🌸', thumbnail: './jpg/photo1.jpg' },
-        { src: './jpg/2.jpg', title: 'Chịch Nhau Mãi Mãi 💑', thumbnail: './jpg/photo2.jpg' }
+        { src: './jpg/1.jpg', title: 'Kỷ Niệm Đầu Tiên 🌸', thumbnail: './jpg/xxx.jpg' },
+        { src: './jpg/2.jpg', title: 'Chịch Nhau 247 💑', thumbnail: './jpg/xxx.jpg' }
       ]
     };
 
@@ -787,20 +967,59 @@
       const months = Math.floor(remainingDays / 30);
       const weeks = Math.floor((remainingDays % 30) / 7);
       const finalDays = remainingDays % 30 % 7;
-      document.getElementById('love-details').innerHTML = `
-        Chúng mình đã yêu nhau:<br>
-        ${years} năm 💖<br>
-        ${months} tháng 🌸<br>
-        ${weeks} tuần 💌<br>
-        ${finalDays} ngày 💞
-      `;
-      document.getElementById('love-counter').textContent = days;
+
+      // Update detail boxes
+      const boxes = [
+        { id: 'years', value: years },
+        { id: 'months', value: months },
+        { id: 'weeks', value: weeks },
+        { id: 'days', value: finalDays }
+      ];
+
+      boxes.forEach(box => {
+        const element = document.getElementById(box.id);
+        element.textContent = box.value;
+        element.parentElement.classList.add('animating');
+        setTimeout(() => element.parentElement.classList.remove('animating'), 300);
+      });
+
+      return days; // Return days for love-counter
+    }
+
+    // Animate counter
+    function animateCounter(targetNumber, duration = 2000) {
+      const counter = document.getElementById('love-counter');
+      let start = 1;
+      let startTime = null;
+
+      function updateCounter(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.floor(start + (targetNumber - start) * progress);
+        
+        counter.textContent = current;
+        counter.classList.add('animating');
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = targetNumber;
+          setTimeout(() => counter.classList.remove('animating'), 200);
+        }
+      }
+
+      requestAnimationFrame(updateCounter);
     }
 
     // Update love duration
     function startLoveCounter() {
-      calculateLoveDuration();
-      setInterval(calculateLoveDuration, 24 * 60 * 60 * 1000);
+      const days = calculateLoveDuration();
+      animateCounter(days, Math.min(2000 + days * 2, 3000)); // Duration scales with days, max 3s
+      setInterval(() => {
+        const days = calculateLoveDuration();
+        document.getElementById('love-counter').textContent = days;
+      }, 24 * 60 * 60 * 1000);
     }
 
     // Create floating hearts
@@ -852,18 +1071,25 @@
     function populateVideoPopup() {
       const videoPopupContent = document.getElementById('video-popup-content');
       videoPopupContent.innerHTML = '';
+      const stickers = ['💖', '🌸', '💗'];
       mediaItems.videos.forEach((video, index) => {
         const item = document.createElement('div');
-        item.className = 'popup-item';
+        item.className = 'album-item';
+        item.style.setProperty('--rotate', (Math.random() * 10 - 5));
+        item.style.setProperty('--delay', index);
+        item.style.setProperty('--sticker', `"${stickers[Math.floor(Math.random() * stickers.length)]}"`);
         item.innerHTML = `
           <img src="${video.thumbnail}" alt="${video.title}">
           <span class="font-[Dancing+Script]">${video.title}</span>
         `;
         item.onclick = () => {
-          currentVideoIndex = index;
-          populateVideos();
-          toggleVideoPopup();
-          playClickSound();
+          item.style.animation = 'flip 0.3s ease forwards';
+          setTimeout(() => {
+            currentVideoIndex = index;
+            populateVideos();
+            toggleVideoPopup();
+            playClickSound();
+          }, 300);
         };
         videoPopupContent.appendChild(item);
       });
@@ -874,9 +1100,79 @@
       const popup = document.getElementById('video-popup');
       if (!popup.classList.contains('active')) {
         populateVideoPopup();
+        popup.classList.add('active');
+      } else {
+        popup.style.animation = 'closeBook 0.4s ease forwards';
+        setTimeout(() => {
+          popup.classList.remove('active');
+          popup.style.animation = '';
+          createScatterHearts(popup);
+        }, 400);
       }
-      popup.classList.toggle('active');
       playClickSound();
+    }
+
+    // Populate photo popup
+    function populatePhotoPopup() {
+      const photoPopupContent = document.getElementById('photo-popup-content');
+      photoPopupContent.innerHTML = '';
+      const stickers = ['💖', '🌸', '💗'];
+      mediaItems.photos.forEach((photo, index) => {
+        const item = document.createElement('div');
+        item.className = 'album-item';
+        item.style.setProperty('--rotate', (Math.random() * 10 - 5));
+        item.style.setProperty('--delay', index);
+        item.style.setProperty('--sticker', `"${stickers[Math.floor(Math.random() * stickers.length)]}"`);
+        item.innerHTML = `
+          <img src="${photo.thumbnail}" alt="${photo.title}">
+          <span class="font-[Indie+Flower]">${photo.title}</span>
+        `;
+        item.onclick = () => {
+          item.style.animation = 'flip 0.3s ease forwards';
+          setTimeout(() => {
+            currentPhotoIndex = index;
+            populatePhotos();
+            togglePhotoPopup();
+            playClickSound();
+          }, 300);
+        };
+        photoPopupContent.appendChild(item);
+      });
+    }
+
+    // Toggle photo popup
+    function togglePhotoPopup() {
+      const popup = document.getElementById('photo-popup');
+      if (!popup.classList.contains('active')) {
+        populatePhotoPopup();
+        popup.classList.add('active');
+      } else {
+        popup.style.animation = 'closeBook 0.4s ease forwards';
+        setTimeout(() => {
+          popup.classList.remove('active');
+          popup.style.animation = '';
+          createScatterHearts(popup);
+        }, 400);
+      }
+      playClickSound();
+    }
+
+    // Create scatter hearts
+    function createScatterHearts(popup) {
+      const count = 5;
+      const centerX = popup.offsetLeft + popup.offsetWidth / 2;
+      const centerY = popup.offsetTop + popup.offsetHeight / 2;
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'scatter-heart';
+        heart.textContent = ['💖', '💗', '💘'][Math.floor(Math.random() * 3)];
+        heart.style.left = centerX + 'px';
+        heart.style.top = centerY + 'px';
+        heart.style.setProperty('--x', Math.random() * 2 - 1);
+        heart.style.setProperty('--y', Math.random() * 2 - 1);
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 800);
+      }
     }
 
     // Video controls
@@ -934,37 +1230,6 @@
         <h3 class="text-lg font-semibold text-white mt-2 font-[Indie+Flower]">${mediaItems.photos[currentPhotoIndex].title}</h3>
       `;
       photoList.appendChild(photoItem);
-    }
-
-    // Populate photo popup
-    function populatePhotoPopup() {
-      const photoPopupContent = document.getElementById('photo-popup-content');
-      photoPopupContent.innerHTML = '';
-      mediaItems.photos.forEach((photo, index) => {
-        const item = document.createElement('div');
-        item.className = 'popup-item';
-        item.innerHTML = `
-          <img src="${photo.thumbnail}" alt="${photo.title}">
-          <span class="font-[Indie+Flower]">${photo.title}</span>
-        `;
-        item.onclick = () => {
-          currentPhotoIndex = index;
-          populatePhotos();
-          togglePhotoPopup();
-          playClickSound();
-        };
-        photoPopupContent.appendChild(item);
-      });
-    }
-
-    // Toggle photo popup
-    function togglePhotoPopup() {
-      const popup = document.getElementById('photo-popup');
-      if (!popup.classList.contains('active')) {
-        populatePhotoPopup();
-      }
-      popup.classList.toggle('active');
-      playClickSound();
     }
 
     // Open modal
